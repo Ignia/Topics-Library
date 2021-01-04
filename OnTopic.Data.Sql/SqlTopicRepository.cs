@@ -317,11 +317,13 @@ namespace OnTopic.Data.Sql {
       /*------------------------------------------------------------------------------------------------------------------------
       | Define variables
       \-----------------------------------------------------------------------------------------------------------------------*/
+      topic.IsDirty(out var dirtyObjects);
+
       var areReferencesResolved = true;
-      var isTopicDirty          = topic.IsDirty();
-      var areRelationshipsDirty = topic.Relationships.IsDirty();
-      var areReferencesDirty    = topic.References.IsDirty;
-      var areAttributesDirty    = topic.Attributes.IsDirty(true);
+      var isTopicDirty          = dirtyObjects.HasFlag(DirtyObjects.Topic);
+      var areRelationshipsDirty = dirtyObjects.HasFlag(DirtyObjects.Relationships);
+      var areReferencesDirty    = dirtyObjects.HasFlag(DirtyObjects.References);
+      var areAttributesDirty    = dirtyObjects.HasFlag(DirtyObjects.Attributes);
       var extendedAttributeList = GetAttributes(topic, isExtendedAttribute: true);
       var indexedAttributeList  = GetAttributes(
         topic                   : topic,
